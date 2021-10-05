@@ -7,112 +7,55 @@ using System.Drawing;
 
 namespace TP
 {
-    class SportCar
+    /// <summary>
+    /// Класс отрисовки танка
+    /// </summary>
+    public class SportCar : Car
     {
-        /// Левая координата отрисовки танка
-        private float _startPosX;
-
-        /// Правая кооридната отрисовки танка
-        private float _startPosY;
-
-        /// Ширина окна отрисовки
-        private int _pictureWidth=1179;
-
-        /// Высота окна отрисовки
-        private int _pictureHeight=521;
-
-        /// Ширина отрисовки танка
-        private readonly int carWidth = 145;
-
-        /// Высота отрисовки танка
-        private readonly int carHeight = 75;
-
-        /// Максимальная скорость
-        public int MaxSpeed { private set; get; }
-
-        /// Вес танка
-        public float Weight { private set; get; }
-
-        /// Основной цвет танка
-        public Color MainColor { private set; get; }
-
+        /// <summary>
         /// Дополнительный цвет
+        /// </summary>
         public Color DopColor { private set; get; }
-
+        /// <summary>
         /// Признак наличия пушки
+        /// </summary>
         public bool TankGun { private set; get; }
-
-        /// Признак наличия боковых спойлеров
+        /// <summary>
+        /// Признак наличия боковой части танка
+        /// </summary>
         public bool SideSpoiler { private set; get; }
-
-        /// Признак наличия заднего спойлера
+        /// <summary>
+        /// Признак наличия задней части танка
+        /// </summary>
         public bool TankBack { private set; get; }
-
+        /// <summary>
         /// Признак наличия скина на танк
+        /// </summary>
         public bool TankSkin { private set; get; }
-
-        /// Инициализация свойств
-        public void Init(int maxSpeed, float weight, Color mainColor, Color dopColor,
-       bool tankGun, bool sidespoiler, bool tankback, bool tankskin)
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="maxSpeed">Максимальная скорость</param>
+        /// <param name="weight">Вес танка</param>
+        /// <param name="mainColor">Основной цвет танка</param>
+        /// <param name="dopColor">Дополнительный танка</param>
+        /// <param name="frontSpoiler">Признак наличия пушки</param>
+        /// <param name="sideSpoiler">Признак наличия боковой части танка</param>
+        /// <param name="backSpoiler">Признак наличия задней части танка</param>
+        /// <param name="sportLine">Признак наличия скина на танк</param>
+        public SportCar(int maxSpeed, float weight, Color mainColor, Color dopColor,
+       bool tankGun, bool sideSpoiler, bool tankBack, bool tankSkin) :
+        base(maxSpeed, weight, mainColor, 100, 60)
         {
-            MaxSpeed = maxSpeed;
-            Weight = weight;
-            MainColor = mainColor;
             DopColor = dopColor;
             TankGun = tankGun;
-            SideSpoiler = sidespoiler;
-            TankBack = tankback;
-            TankSkin = tankskin;
+            SideSpoiler = sideSpoiler;
+            TankBack = tankBack;
+            TankSkin = tankSkin;
         }
 
-        /// Установка позиции танка
-        public void SetPosition(int x, int y, int width, int height)
-        {
-            _pictureHeight = height;
-            _pictureWidth = width;
-            _startPosX = x;
-            _startPosY = y;
 
-        }
-
-        /// Изменение направления пермещения
-        public void MoveTransport(Direction direction)
-        {
-            float step = MaxSpeed * 100 / Weight;
-            switch (direction)
-            {
-                // вправо
-                case Direction.Right:
-                    if (_startPosX + step < _pictureWidth - carWidth)
-                    {
-                        _startPosX += step;
-                    }
-                    break;
-                //влево
-                case Direction.Left:
-                    if (_startPosX + step > 0 - _startPosX)
-                    {
-                        _startPosX -= step;
-                    }
-                    break;
-                //вверх
-                case Direction.Up:
-                    if (_startPosY - step > 0 )
-                    {
-                        _startPosY -= step;
-                    }
-                    break;
-                //вниз
-                case Direction.Down:
-                    if (_startPosY + step < _pictureHeight - carHeight)
-                    {
-                        _startPosY += step;
-                    }
-                    break;
-            }
-        }
-
-        public void DrawTransport(Graphics g)
+        public override void DrawTransport(Graphics g)
         {
             Pen pen = new Pen(Color.Black);
             Brush brBlack = new SolidBrush(Color.Black);

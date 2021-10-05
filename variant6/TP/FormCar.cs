@@ -12,33 +12,59 @@ namespace TP
 {
     public partial class FormCar : Form
     {
-        private SportCar car;
+        private ITransport car;
+        /// <summary>
+        /// Конструктор
+        /// </summary>
         public FormCar()
         {
             InitializeComponent();
         }
-        /// Метод отрисовки танка
+
+        /// <summary>
+        /// Метод отрисовки машины
+        /// </summary>
         private void Draw()
         {
             Bitmap bmp = new Bitmap(pictureBoxCars.Width, pictureBoxCars.Height);
             Graphics gr = Graphics.FromImage(bmp);
             car.DrawTransport(gr);
-
             pictureBoxCars.Image = bmp;
         }
-
-        /// Обработка нажатия кнопки "Создать"
-        private void buttonCreate_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Обработка нажатия кнопки "Создать автомобиль"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCreateCar_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
-            car = new SportCar();
-            car.Init(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.LightGreen,
-           Color.Green, true, true, true, true); car.SetPosition(rnd.Next(10, 100),
-           rnd.Next(10, 100), pictureBoxCars.Width, pictureBoxCars.Height);
+            car = new Car(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Black);
+            car.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width,
+           pictureBoxCars.Height);
+            Draw();
+        }
+        /// <summary>
+        /// Обработка нажатия кнопки "Создать танк"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCreateSportCar_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            car = new SportCar(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.LightGreen,
+           Color.Green, true, true, true, true);
+            car.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width,
+           pictureBoxCars.Height);
             Draw();
         }
 
+
+        /// <summary>
         /// Обработка нажатия кнопок управления
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonMove_Click(object sender, EventArgs e)
         {
             //получаем имя кнопки
@@ -61,5 +87,6 @@ namespace TP
             Draw();
         }
 
+        
     }
 }
