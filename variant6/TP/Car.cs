@@ -105,7 +105,6 @@ namespace TP
 
             //основа танка
             g.FillRectangle(br, _startPosX + 15, _startPosY + 30, 90, 15);
-            g.FillRectangle(br, _startPosX + 30, _startPosY, 60, 30);
             g.DrawRectangle(pen, _startPosX + 30, _startPosY, 60, 30);
 
             //задняя часть

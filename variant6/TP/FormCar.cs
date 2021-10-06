@@ -52,8 +52,8 @@ namespace TP
         private void buttonCreateSportCar_Click(object sender, EventArgs e)
         {
             Random rnd = new Random();
-            car = new SportCar(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.LightGreen,
-           Color.Green, true, true, true, true);
+            car = new SportCar(rnd.Next(100, 300), rnd.Next(1000, 2000), Color.Black,
+           Color.LightGreen, true, true, true);
             car.SetPosition(rnd.Next(10, 100), rnd.Next(10, 100), pictureBoxCars.Width,
            pictureBoxCars.Height);
             Draw();
