@@ -54,7 +54,7 @@ namespace TP
             this.buttonRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonRight.BackgroundImage = global::TP.Properties.Resources.orig;
             this.buttonRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonRight.Location = new System.Drawing.Point(842, 419);
+            this.buttonRight.Location = new System.Drawing.Point(1085, 421);
             this.buttonRight.Name = "buttonRight";
             this.buttonRight.Size = new System.Drawing.Size(30, 30);
             this.buttonRight.TabIndex = 5;
@@ -66,7 +66,7 @@ namespace TP
             this.buttonDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonDown.BackgroundImage = global::TP.Properties.Resources.image002;
             this.buttonDown.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonDown.Location = new System.Drawing.Point(806, 419);
+            this.buttonDown.Location = new System.Drawing.Point(1049, 421);
             this.buttonDown.Name = "buttonDown";
             this.buttonDown.Size = new System.Drawing.Size(30, 30);
             this.buttonDown.TabIndex = 4;
@@ -78,7 +78,7 @@ namespace TP
             this.buttonLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonLeft.BackgroundImage = global::TP.Properties.Resources.png_transparent_arrow_left_arrow_hd_angle_web_design_text;
             this.buttonLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonLeft.Location = new System.Drawing.Point(770, 419);
+            this.buttonLeft.Location = new System.Drawing.Point(1013, 421);
             this.buttonLeft.Name = "buttonLeft";
             this.buttonLeft.Size = new System.Drawing.Size(30, 30);
             this.buttonLeft.TabIndex = 3;
@@ -91,7 +91,7 @@ namespace TP
             this.buttonUp.BackgroundImage = global::TP.Properties.Resources.arrow_outline_red_up_1;
             this.buttonUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonUp.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.buttonUp.Location = new System.Drawing.Point(806, 383);
+            this.buttonUp.Location = new System.Drawing.Point(1049, 385);
             this.buttonUp.Name = "buttonUp";
             this.buttonUp.Size = new System.Drawing.Size(30, 30);
             this.buttonUp.TabIndex = 2;
@@ -102,7 +102,7 @@ namespace TP
             // 
             this.pictureBoxCars.Location = new System.Drawing.Point(0, 37);
             this.pictureBoxCars.Name = "pictureBoxCars";
-            this.pictureBoxCars.Size = new System.Drawing.Size(884, 424);
+            this.pictureBoxCars.Size = new System.Drawing.Size(1120, 424);
             this.pictureBoxCars.TabIndex = 0;
             this.pictureBoxCars.TabStop = false;
             // 
@@ -120,7 +120,7 @@ namespace TP
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(884, 461);
+            this.ClientSize = new System.Drawing.Size(1127, 463);
             this.Controls.Add(this.buttonCreateCar);
             this.Controls.Add(this.buttonRight);
             this.Controls.Add(this.buttonDown);
