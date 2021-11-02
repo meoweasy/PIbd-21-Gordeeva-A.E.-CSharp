@@ -15,9 +15,13 @@ namespace TP
     public class Parking<T> where T : class, ITransport
     {
         /// <summary>
-        /// Массив объектов, которые храним
+        /// Список объектов, которые храним
         /// </summary>
-        private readonly T[] _places;
+        private readonly List<T> _places;
+        /// <summary>
+        /// Максимальное количество мест на парковке
+        /// </summary>
+        private readonly int _maxCount;
         /// <summary>
         /// Ширина окна отрисовки
         /// </summary>
@@ -43,18 +47,10 @@ namespace TP
         {
             int width = picWidth / _placeSizeWidth;
             int height = picHeight / _placeSizeHeight;
-            _places = new T[width * height];
+            _maxCount = width * height;
             pictureWidth = picWidth;
             pictureHeight = picHeight;
-        }
-        /// <summary>
-        /// Проверка места
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        private bool CheckFreePlace(int index)
-        {
-            return _places[index] == null;
+            _places = new List<T>();
         }
         /// <summary>
         /// Перегрузка оператора сложения
@@ -63,40 +59,36 @@ namespace TP
         /// <param name="p">Парковка</param>
         /// <param name="car">Добавляемый автомобиль</param>
         /// <returns></returns>
-        public static int operator +(Parking<T> p, T car)
+        public static bool operator +(Parking<T> p, T car)
         {
-            for (int i = 0; i < p._places.Length; i++)
-            {
-                if (p.CheckFreePlace(i))
-                {
-                    p._places[i] = car;
-                    p._places[i].SetPosition(20 + i % 4 * p._placeSizeWidth, i / 4 * p._placeSizeHeight + 15, p.pictureWidth, p.pictureHeight);
-                    return i;
-                }
+            if (p._places.Count == p._maxCount) {
+                return false;
             }
-            return -1;
+            else
+            {
+                p._places.Add(car);
+                return true;
+            }
         }
-
         /// <summary>
         /// Перегрузка оператора вычитания
         /// Логика действия: с парковки забираем автомобиль
         /// </summary>
         /// <param name="p">Парковка</param>
-        /// <param name="index">Индекс места, с которого пытаемся извлеч объект</param>
+        /// <param name="index">Индекс места, с которого пытаемся извлечь объект</param>
         /// <returns></returns>
         public static T operator -(Parking<T> p, int index)
         {
-            if (index < 0 || index > p._places.Length)
+            if (index > p._maxCount)
             {
                 return null;
             }
-            if (!p.CheckFreePlace(index))
+            else
             {
-                T car = p._places[index];
-                p._places[index] = null;
-                return car;
+                T delete = p._places[index];
+                p._places.Remove(delete);
+                return delete;
             }
-            return null;
         }
         /// <summary>
         /// Метод отрисовки парковки
@@ -105,9 +97,11 @@ namespace TP
         public void Draw(Graphics g)
         {
             DrawMarking(g);
-            for (int i = 0; i < _places.Length; i++)
+            for (int i = 0; i < _places.Count; i++)
             {
-                _places[i]?.DrawTransport(g);
+                _places[i].SetPosition(5 + i / 5 * _placeSizeWidth + 5, i % 5 *
+_placeSizeHeight + 15, pictureWidth, pictureHeight);
+                _places[i].DrawTransport(g);
             }
         }
         /// <summary>

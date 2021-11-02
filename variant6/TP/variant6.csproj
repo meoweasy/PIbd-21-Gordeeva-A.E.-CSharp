@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="ITransport.cs" />
     <Compile Include="Parking.cs" />
+    <Compile Include="ParkingCollection.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
