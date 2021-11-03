@@ -54,20 +54,7 @@ namespace TP
             _places = new List<T>();
         }
         
-        public T this[int index]
-        {
-            get { if (index < _places.Count)
-                {
-                    return _places[index]; 
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set { if (index < _places.Count) { _places[index] = value; } }
-        }
-
+        
         /// <summary>
         /// Перегрузка оператора сложения
         /// Логика действия: на парковку добавляется автомобиль
