@@ -14,6 +14,7 @@ namespace TP
     /// <typeparam name="T"></typeparam>
     public class Parking<T> where T : class, ITransport
     {
+
         /// <summary>
         /// Список объектов, которые храним
         /// </summary>
@@ -52,6 +53,21 @@ namespace TP
             pictureHeight = picHeight;
             _places = new List<T>();
         }
+        
+        public T this[int index]
+        {
+            get { if (index < _places.Count)
+                {
+                    return _places[index]; 
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set { if (index < _places.Count) { _places[index] = value; } }
+        }
+
         /// <summary>
         /// Перегрузка оператора сложения
         /// Логика действия: на парковку добавляется автомобиль
@@ -61,7 +77,7 @@ namespace TP
         /// <returns></returns>
         public static bool operator +(Parking<T> p, T car)
         {
-            if (p._places.Count == p._maxCount) {
+            if (p._places.Count >= p._maxCount) {
                 return false;
             }
             else
@@ -79,14 +95,14 @@ namespace TP
         /// <returns></returns>
         public static T operator -(Parking<T> p, int index)
         {
-            if (index > p._maxCount)
+            if (index < -1 || index > p._places.Count)
             {
                 return null;
             }
             else
             {
                 T delete = p._places[index];
-                p._places.Remove(delete);
+                p._places.RemoveAt(index);
                 return delete;
             }
         }
@@ -99,8 +115,7 @@ namespace TP
             DrawMarking(g);
             for (int i = 0; i < _places.Count; i++)
             {
-                _places[i].SetPosition(5 + i / 5 * _placeSizeWidth + 5, i % 5 *
-_placeSizeHeight + 15, pictureWidth, pictureHeight);
+                _places[i].SetPosition(4 + i % 4 * _placeSizeWidth + 5, i / 4 * _placeSizeHeight + 15, pictureWidth, pictureHeight);
                 _places[i].DrawTransport(g);
             }
         }

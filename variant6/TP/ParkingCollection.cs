@@ -45,7 +45,11 @@ namespace TP
         /// <param name="name">Название парковки</param>
         public void AddParking(string name)
         {
-            // Прописать логику для добавления
+            if (parkingStages.ContainsKey(name))
+            {
+                return;
+            }
+            parkingStages.Add(name, new Parking<Vehicle>(pictureWidth, pictureHeight));
         }
         /// <summary>
         /// Удаление парковки
@@ -53,7 +57,10 @@ namespace TP
         /// <param name="name">Название парковки</param>
         public void DelParking(string name)
         {
-            // Прописать логику для удаления
+            if (parkingStages.ContainsKey(name))
+            {
+                parkingStages.Remove(name);
+            }
         }
         /// <summary>
         /// Доступ к парковке
@@ -62,8 +69,15 @@ namespace TP
         /// <returns></returns>
         public Parking<Vehicle> this[string ind]
         {
-            // Продумать логику для индексатора
+            get
+            {
+                if (parkingStages.ContainsKey(ind))
+                {
+                    return parkingStages[ind];
+                }
+                return null;
+            }
         }
     }
 }
-}
+
