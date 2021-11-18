@@ -89,5 +89,13 @@ namespace TP
                 g.FillEllipse(brGreen, _startPosX + 60, _startPosY + 15, 13, 10);
             }
         }
+        /// <summary>
+        /// Смена дополнительного цвета
+        /// </summary>
+        /// <param name="color"></param>
+        public void SetDopColor(Color color)
+        {
+            DopColor = color;
+        }
     }
 }
