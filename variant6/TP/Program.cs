@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace TP
 {
+    public delegate void CarDelegate(Vehicle car);
     static class Program
     {
         /// <summary>
