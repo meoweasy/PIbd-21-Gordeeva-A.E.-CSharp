@@ -24,8 +24,15 @@ namespace TP
 		public FormCarConfig()
 		{
 			InitializeComponent();
-			MouseDown
 			buttonCancel.Click += (object sender, EventArgs e) => { Close(); };
+			pRed.MouseDown += panelColor_MouseDown;
+			pYellow.MouseDown += panelColor_MouseDown;
+			pBlack.MouseDown += panelColor_MouseDown;
+			pWhite.MouseDown += panelColor_MouseDown;
+			pGray.MouseDown += panelColor_MouseDown;
+			pOrange.MouseDown += panelColor_MouseDown;
+			pGreen.MouseDown += panelColor_MouseDown;
+			pBlue.MouseDown += panelColor_MouseDown;
 		}
 		/// <summary>
 		/// Отрисовать машину
