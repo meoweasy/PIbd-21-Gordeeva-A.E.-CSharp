@@ -49,6 +49,23 @@ namespace TP
             TankSkin = tankSkin;
         }
 
+        /// <summary>
+        /// Конструктор для загрузки с файла
+        /// </summary>
+        /// <param name="info"></param>
+        public SportCar(string info) : base(info)
+        {
+            string[] strs = info.Split(separator);
+            if (strs.Length == 8)
+            {
+                MaxSpeed = Convert.ToInt32(strs[0]);
+                Weight = Convert.ToInt32(strs[1]);
+                MainColor = Color.FromName(strs[2]);
+                DopColor = Color.FromName(strs[3]);
+                TankGun = Convert.ToBoolean(strs[4]);
+                SideSpoiler = Convert.ToBoolean(strs[5]);
+            }
+        }
 
         public override void DrawTransport(Graphics g)
         {
@@ -97,5 +114,11 @@ namespace TP
         {
             DopColor = color;
         }
+
+        public override string ToString()
+        {
+            return
+            $"{base.ToString()}{separator}{DopColor.Name}{separator}{TankGun}{separator}{SideSpoiler}{separator}{TankSkin}";
+            }
     }
 }

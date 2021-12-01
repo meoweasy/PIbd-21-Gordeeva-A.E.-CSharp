@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace TP
 {
@@ -27,6 +28,11 @@ namespace TP
         /// Высота окна отрисовки
         /// </summary>
         private readonly int pictureHeight;
+
+        /// <summary>
+        /// Разделитель для записи информации в файл
+        /// </summary>
+        private readonly char separator = ':';
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -77,6 +83,134 @@ namespace TP
                 }
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Метод записи информации в файл
+        /// </summary>
+        /// <param name="text">Строка, которую следует записать</param>
+        /// <param name="stream">Поток для записи</param>
+        private void WriteToFile(string text, FileStream stream)
+        {
+            byte[] info = new UTF8Encoding(true).GetBytes(text);
+            stream.Write(info, 0, info.Length);
+        }
+        /// <summary>
+        /// Сохранение информации по автомобилям на парковках в файл
+        /// </summary>
+        /// <param name="filename">Путь и имя файла</param>
+        /// <returns></returns>
+        public bool SaveData(string filename)
+        {
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            using (FileStream fs = new FileStream(filename, FileMode.Create))
+            {
+                WriteToFile($"ParkingCollection{Environment.NewLine}", fs);
+                foreach (var level in parkingStages)
+                {
+                    //Начинаем парковку
+
+                    WriteToFile($"Parking{separator}{level.Key}{Environment.NewLine}",
+
+                    fs);
+                    ITransport car = null;
+
+                    for (int i = 0; (car = level.Value.GetNext(i)) != null; i++)
+                    {
+                        if (car != null)
+                        {
+                            //если место не пустое
+                            //Записываем тип машины
+                            if (car.GetType().Name == "Car")
+
+                            {
+                                WriteToFile($"Car{separator}", fs);
+                            }
+
+                            if (car.GetType().Name == "SportCar")
+
+                            {
+                                WriteToFile($"SportCar{separator}", fs);
+                            }
+
+                            //Записываемые параметры
+                            WriteToFile(car + Environment.NewLine, fs);
+
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Загрузка нформации по автомобилям на парковках из файла
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public bool LoadData(string filename)
+        {
+            if (!File.Exists(filename))
+            {
+                return false;
+            }
+            string bufferTextFromFile = "";
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            {
+                byte[] b = new byte[fs.Length];
+                UTF8Encoding temp = new UTF8Encoding(true);
+                while (fs.Read(b, 0, b.Length) > 0)
+                {
+                    bufferTextFromFile += temp.GetString(b);
+                }
+            }
+            bufferTextFromFile = bufferTextFromFile.Replace("\r", "");
+            var strs = bufferTextFromFile.Split('\n');
+            if (strs[0].Contains("ParkingCollection"))
+            {
+                //очищаем записи
+                parkingStages.Clear();
+            }
+            else
+            {
+                //если нет такой записи, то это не те данные
+                return false;
+            }
+            Vehicle car = null;
+            string key = string.Empty;
+            for (int i = 1; i < strs.Length; ++i)
+            {
+                //идем по считанным записям
+                if (strs[i].Contains("Parking"))
+                {
+                    //начинаем новую парковку
+                    key = strs[i].Split(separator)[1];
+                    parkingStages.Add(key, new Parking<Vehicle>(pictureWidth,
+
+                    pictureHeight));
+                    continue;
+                }
+                if (string.IsNullOrEmpty(strs[i]))
+                {
+                    continue;
+                }
+                if (strs[i].Split(separator)[0] == "Car")
+                {
+                    car = new Car(strs[i].Split(separator)[1]);
+                }
+                else if (strs[i].Split(separator)[0] == "SportCar")
+                {
+                    car = new SportCar(strs[i].Split(separator)[1]);
+                }
+                var result = parkingStages[key] + car;
+                if (!result)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
