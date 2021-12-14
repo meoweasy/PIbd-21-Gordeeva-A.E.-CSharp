@@ -65,13 +65,10 @@ namespace TP
         public static bool operator +(Parking<T> p, T car)
         {
             if (p._places.Count >= p._maxCount) {
-                return false;
+                throw new ParkingOverflowException();
             }
-            else
-            {
-                p._places.Add(car);
-                return true;
-            }
+            p._places.Add(car);
+            return true;
         }
         /// <summary>
         /// Перегрузка оператора вычитания
@@ -84,14 +81,11 @@ namespace TP
         {
             if (index < -1 || index > p._places.Count)
             {
-                return null;
+                throw new ParkingNotFoundException(index);
             }
-            else
-            {
-                T delete = p._places[index];
-                p._places.RemoveAt(index);
-                return delete;
-            }
+            T car = p._places[index];
+            p._places.RemoveAt(index);
+            return car;
         }
         /// <summary>
         /// Метод отрисовки парковки

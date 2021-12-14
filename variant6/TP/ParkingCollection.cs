@@ -68,6 +68,8 @@ namespace TP
                 parkingStages.Remove(name);
             }
         }
+
+
         /// <summary>
         /// Доступ к парковке
         /// </summary>
@@ -100,7 +102,7 @@ namespace TP
         /// </summary>
         /// <param name="filename">Путь и имя файла</param>
         /// <returns></returns>
-        public bool SaveData(string filename)
+        public void SaveData(string filename)
         {
             if (File.Exists(filename))
             {
@@ -141,18 +143,17 @@ namespace TP
                     }
                 }
             }
-            return true;
         }
         /// <summary>
         /// Загрузка нформации по автомобилям на парковках из файла
         /// </summary>
         /// <param name="filename"></param>
         /// <returns></returns>
-        public bool LoadData(string filename)
+        public void LoadData(string filename)
         {
             if (!File.Exists(filename))
             {
-                return false;
+                throw new FileNotFoundException();
             }
             string bufferTextFromFile = "";
             using (FileStream fs = new FileStream(filename, FileMode.Open))
@@ -174,7 +175,7 @@ namespace TP
             else
             {
                 //если нет такой записи, то это не те данные
-                return false;
+                throw new Exception("Неверный формат файла");
             }
             Vehicle car = null;
             string key = string.Empty;
@@ -202,13 +203,11 @@ namespace TP
                 {
                     car = new SportCar(strs[i].Split(separator)[1]);
                 }
-                var result = parkingStages[key] + car;
-                if (!result)
+                if (!(parkingStages[key] + car))
                 {
-                    return false;
+                    throw new Exception("Не удалось загрузить автомобиль на парковку");
                 }
             }
-            return true;
         }
     }
 }

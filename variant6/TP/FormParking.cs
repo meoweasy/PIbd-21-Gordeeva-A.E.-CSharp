@@ -1,4 +1,5 @@
 ﻿using System;
+using NLog;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,11 +17,19 @@ namespace TP
         /// Объект от класса-коллекции парковок
         /// </summary>
         private readonly ParkingCollection parkingCollection;
+
+        /// <summary>
+        /// Логгер
+        /// </summary>
+        private readonly Logger logger;
+
+
         public FormParking()
         {
             InitializeComponent();
             parkingCollection = new ParkingCollection(pictureBoxParking.Width,
 pictureBoxParking.Height);
+            logger = LogManager.GetCurrentClassLogger();
         }
         /// <summary>
         /// Заполнение listBoxLevels
@@ -70,6 +79,7 @@ pictureBoxParking.Height);
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            logger.Info($"Добавили парковку {textBoxNewLevelName.Text}");
             parkingCollection.AddParking(textBoxNewLevelName.Text);
             ReloadLevels();
         }
@@ -82,11 +92,13 @@ pictureBoxParking.Height);
         {
             if (listBoxParkings.SelectedIndex > -1)
             {
-                if (MessageBox.Show($"Удалить парковку { listBoxParkings.SelectedItem.ToString()}?", "Удаление", MessageBoxButtons.YesNo,
-MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    parkingCollection.DelParking(textBoxNewLevelName.Text);
+                if (MessageBox.Show($"Удалить парковку{ listBoxParkings.SelectedItem.ToString()}?", "Удаление", MessageBoxButtons.YesNo,
+MessageBoxIcon.Question) == DialogResult.Yes){
+                    logger.Info($"Удалили парковку{ listBoxParkings.SelectedItem.ToString()}");
+parkingCollection.DelParking(textBoxNewLevelName.Text);
+
                     ReloadLevels();
+
                 }
             }
         }
@@ -147,15 +159,30 @@ MessageBoxIcon.Question) == DialogResult.Yes)
         {
             if (listBoxParkings.SelectedIndex > -1 && maskedTextBox.Text != "")
             {
-                var car = parkingCollection[listBoxParkings.SelectedItem.ToString()] -
-                Convert.ToInt32(maskedTextBox.Text);
-                if (car != null)
+                try
                 {
-                    FormCar form = new FormCar();
-                    form.SetCar(car);
-                    form.ShowDialog();
+                    var car =
+                    parkingCollection[listBoxParkings.SelectedItem.ToString()] -
+                    Convert.ToInt32(maskedTextBox.Text);
+                    if (car != null)
+                    {
+                        FormCar form = new FormCar();
+                        form.SetCar(car);
+                        form.ShowDialog();
+                        logger.Info($"Изъят автомобиль {car} с места{ maskedTextBox.Text}");
+                        Draw();
+                    }
                 }
-                Draw();
+                catch (ParkingNotFoundException ex)
+                {
+                    MessageBox.Show(ex.Message, "Не найдено", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -166,6 +193,7 @@ MessageBoxIcon.Question) == DialogResult.Yes)
         /// <param name="e"></param>
         private void listBoxParkings_SelectedIndexChanged_1(object sender, EventArgs e)
         {
+            logger.Info($"Перешли на парковку{ listBoxParkings.SelectedItem.ToString()}");
             Draw();
         }
         /// <summary>
@@ -188,13 +216,32 @@ MessageBoxIcon.Question) == DialogResult.Yes)
         {
             if (car != null && listBoxParkings.SelectedIndex > -1)
             {
-                if ((parkingCollection[listBoxParkings.SelectedItem.ToString()]) + car)
+                try
                 {
+                    if ((parkingCollection[listBoxParkings.SelectedItem.ToString()]) +
+                    car)
+                    {
+                        Draw();
+
+                        logger.Info($"Добавлен автомобиль {car}");
+
+                    }
+                    else
+                    {
+
+                        MessageBox.Show("Машину не удалось поставить");
+                    }
                     Draw();
                 }
-                else
+                catch (ParkingOverflowException ex)
                 {
-                    MessageBox.Show("Машину не удалось поставить");
+                    MessageBox.Show(ex.Message, "Переполнение", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -207,35 +254,51 @@ MessageBoxIcon.Question) == DialogResult.Yes)
         {
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (parkingCollection.SaveData(saveFileDialog.FileName))
+                try
                 {
+                    parkingCollection.SaveData(saveFileDialog.FileName);
                     MessageBox.Show("Сохранение прошло успешно", "Результат",
+
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Info("Сохранено в файл " + saveFileDialog.FileName);
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Не сохранилось", "Результат",
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
-
+        /// <summary>
+        /// Обработка нажатия пункта меню "Загрузить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void загурзитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (parkingCollection.LoadData(openFileDialog.FileName))
+                try
                 {
+                    parkingCollection.LoadData(openFileDialog.FileName);
+
                     MessageBox.Show("Загрузили", "Результат", MessageBoxButtons.OK,
+
                     MessageBoxIcon.Information);
+                    logger.Info("Загружено из файла " + openFileDialog.FileName);
                     ReloadLevels();
                     Draw();
 
                 }
-                else
+                catch (ParkingOccupiedPlaceException ex)
                 {
-                    MessageBox.Show("Не загрузили", "Результат", MessageBoxButtons.OK,
+                    MessageBox.Show(ex.Message, "Занятое место", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
