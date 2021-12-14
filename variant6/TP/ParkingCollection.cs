@@ -113,9 +113,7 @@ namespace TP
                 {
                     //Начинаем парковку
 
-                    WriteToFile($"Parking{separator}{level.Key}{Environment.NewLine}",
-
-                    fs);
+                    WriteToFile($"Parking{separator}{level.Key}{Environment.NewLine}",fs);
                     ITransport car = null;
 
                     for (int i = 0; (car = level.Value.GetNext(i)) != null; i++)

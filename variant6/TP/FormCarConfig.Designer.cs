@@ -309,7 +309,7 @@ namespace TP
             // 
             // pGreen
             // 
-            this.pGreen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.pGreen.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.pGreen.Location = new System.Drawing.Point(113, 117);
             this.pGreen.Name = "pGreen";
             this.pGreen.Size = new System.Drawing.Size(36, 36);
@@ -318,7 +318,7 @@ namespace TP
             // 
             // pOrange
             // 
-            this.pOrange.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.pOrange.BackColor = System.Drawing.Color.Orange;
             this.pOrange.Location = new System.Drawing.Point(58, 117);
             this.pOrange.Name = "pOrange";
             this.pOrange.Size = new System.Drawing.Size(36, 36);

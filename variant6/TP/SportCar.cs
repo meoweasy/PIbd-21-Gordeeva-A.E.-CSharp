@@ -56,7 +56,7 @@ namespace TP
         public SportCar(string info) : base(info)
         {
             string[] strs = info.Split(separator);
-            if (strs.Length == 8)
+            if (strs.Length == 7)
             {
                 MaxSpeed = Convert.ToInt32(strs[0]);
                 Weight = Convert.ToInt32(strs[1]);
@@ -64,6 +64,7 @@ namespace TP
                 DopColor = Color.FromName(strs[3]);
                 TankGun = Convert.ToBoolean(strs[4]);
                 SideSpoiler = Convert.ToBoolean(strs[5]);
+                TankSkin = Convert.ToBoolean(strs[6]);
             }
         }
 
