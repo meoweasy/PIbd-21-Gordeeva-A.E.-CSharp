@@ -10,8 +10,8 @@ using System.Windows.Forms;
 
 namespace TP
 {
-    public partial class FormCarConfig : Form
-    {
+	public partial class FormCarConfig : Form
+	{
 		/// <summary>
 		/// Переменная-выбранная машина
 		/// </summary>
@@ -20,10 +20,20 @@ namespace TP
 		/// Событие
 		/// </summary>
 		//private event CarDelegate eventAddCar;
-		private event Action<Car> eventAddLocomotive;
+
+		private event Action<Car> eventAddCar;
+
+		delegate void buttonOk22();
+
+
 		public FormCarConfig()
 		{
 			InitializeComponent();
+			// анонимный метод
+			buttonOk22 d = delegate{
+				eventAddCar?.Invoke(car);
+				Close();
+			};
 			buttonCancel.Click += (object sender, EventArgs e) => { Close(); };
 			pRed.MouseDown += panelColor_MouseDown;
 			pYellow.MouseDown += panelColor_MouseDown;
@@ -54,13 +64,13 @@ namespace TP
 		/// <param name="ev"></param>
 		public void AddEvent(Action<Car> ev)
 		{
-			if (eventAddLocomotive == null)
+			if (eventAddCar == null)
 			{
-				eventAddLocomotive = ev;
+				eventAddCar = ev;
 			}
 			else
 			{
-				eventAddLocomotive += ev;
+				eventAddCar += ev;
 			}
 		}
 		/// <summary>
@@ -69,7 +79,7 @@ namespace TP
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void labelCar_MouseDown(object sender, MouseEventArgs e)
-        {
+		{
 			labelCar.DoDragDrop(labelCar.Name, DragDropEffects.Move | DragDropEffects.Copy);
 		}
 		/// <summary>
@@ -78,7 +88,7 @@ namespace TP
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void labelSportCar_MouseDown(object sender, MouseEventArgs e)
-        {
+		{
 			labelSportCar.DoDragDrop(labelSportCar.Name, DragDropEffects.Move | DragDropEffects.Copy);
 		}
 		/// <summary>
@@ -86,8 +96,8 @@ namespace TP
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-        private void panelCar_DragEnter(object sender, DragEventArgs e)
-        {
+		private void panelCar_DragEnter(object sender, DragEventArgs e)
+		{
 			if (e.Data.GetDataPresent(DataFormats.Text))
 			{
 				e.Effect = DragDropEffects.Copy;
@@ -103,7 +113,7 @@ namespace TP
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void panelCar_DragDrop(object sender, DragEventArgs e)
-        {
+		{
 			switch (e.Data.GetData(DataFormats.Text).ToString())
 			{
 				case "labelCar":
@@ -122,8 +132,8 @@ namespace TP
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void panelColor_MouseDown(object sender, MouseEventArgs e)
-        {
-			(sender as Control).DoDragDrop((sender as Control).BackColor, DragDropEffects.Move | DragDropEffects.Copy);
+		{
+			(sender as Control).DoDragDrop((sender as Control).BackColor, DragDropEffects.Copy | DragDropEffects.Move);
 		}
 		/// <summary>
 		/// Проверка получаемой информации (ее типа на соответствие требуемому)
@@ -131,7 +141,7 @@ namespace TP
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void labelBaseColor_DragEnter(object sender, DragEventArgs e)
-        {
+		{
 			if (e.Data.GetDataPresent(typeof(Color)))
 			{
 				e.Effect = DragDropEffects.Copy;
@@ -148,7 +158,7 @@ namespace TP
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void labelBaseColo_DragDrop(object sender, DragEventArgs e)
-        {
+		{
 			if (car != null)
 			{
 				car.SetMainColor((Color)e.Data.GetData(typeof(Color)));
@@ -161,7 +171,7 @@ namespace TP
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void labelDopColor_DragDrop(object sender, DragEventArgs e)
-        {
+		{
 			if (car != null)
 			{
 				if (car is SportCar)
@@ -172,17 +182,20 @@ namespace TP
 
 			}
 		}
+
+        
 		/// <summary>
 		/// Добавление машины
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void buttonOk_Click(object sender, EventArgs e)
-        {
-			eventAddLocomotive?.Invoke(car);
+		{
+			eventAddCar?.Invoke(car);
 			Close();
 		}
-        
 
-    }
+
+	}
+
 }
