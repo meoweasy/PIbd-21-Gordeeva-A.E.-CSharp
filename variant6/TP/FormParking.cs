@@ -300,6 +300,7 @@ parkingCollection.DelParking(textBoxNewLevelName.Text);
                     MessageBox.Show(ex.Message, "Неизвестная ошибка при сохранении",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+                
             }
         }
     }
