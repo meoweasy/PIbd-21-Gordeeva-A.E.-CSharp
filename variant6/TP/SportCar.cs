@@ -120,6 +120,6 @@ namespace TP
         {
             return
             $"{base.ToString()}{separator}{DopColor.Name}{separator}{TankGun}{separator}{SideSpoiler}{separator}{TankSkin}";
-            }
+        }
     }
 }

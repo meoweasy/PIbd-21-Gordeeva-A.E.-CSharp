@@ -106,14 +106,13 @@ namespace TP
             {
                 File.Delete(filename);
             }
-            using (FileStream fs = new FileStream(filename, FileMode.Create))
+            using (StreamWriter fs = new StreamWriter(filename,true, Encoding.UTF8))
             {
-                WriteToFile($"ParkingCollection{Environment.NewLine}", fs);
+                fs.WriteLine("ParkingCollection");
                 foreach (var level in parkingStages)
                 {
                     //Начинаем парковку
-
-                    WriteToFile($"Parking{separator}{level.Key}{Environment.NewLine}",fs);
+                    fs.WriteLine($"Parking{separator}{level.Key}");
                     ITransport car = null;
 
                     for (int i = 0; (car = level.Value.GetNext(i)) != null; i++)
@@ -125,17 +124,18 @@ namespace TP
                             if (car.GetType().Name == "Car")
 
                             {
-                                WriteToFile($"Car{separator}", fs);
+                                fs.Write($"Car{separator}");
+
                             }
 
                             if (car.GetType().Name == "SportCar")
 
                             {
-                                WriteToFile($"SportCar{separator}", fs);
+                                fs.Write($"SportCar{separator}");
                             }
 
                             //Записываемые параметры
-                            WriteToFile(car + Environment.NewLine, fs);
+                            fs.WriteLine(car.ToString());
 
                         }
                     }
@@ -154,62 +154,56 @@ namespace TP
             {
                 return false;
             }
-            string bufferTextFromFile = "";
-            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            using (StreamReader fs = new StreamReader(filename, Encoding.UTF8))
             {
-                byte[] b = new byte[fs.Length];
-                UTF8Encoding temp = new UTF8Encoding(true);
-                while (fs.Read(b, 0, b.Length) > 0)
+                string data = fs.ReadLine();
+                string key = string.Empty;
+                if (data.Contains("ParkingCollection"))
                 {
-                    bufferTextFromFile += temp.GetString(b);
+                    //очищаем записи
+                    parkingStages.Clear();
                 }
-            }
-            bufferTextFromFile = bufferTextFromFile.Replace("\r", "");
-            var strs = bufferTextFromFile.Split('\n');
-            if (strs[0].Contains("ParkingCollection"))
-            {
-                //очищаем записи
-                parkingStages.Clear();
-            }
-            else
-            {
-                //если нет такой записи, то это не те данные
-                return false;
-            }
-            Vehicle car = null;
-            string key = string.Empty;
-            for (int i = 1; i < strs.Length; ++i)
-            {
-                //идем по считанным записям
-                if (strs[i].Contains("Parking"))
+                else
                 {
-                    //начинаем новую парковку
-                    key = strs[i].Split(separator)[1];
-                    parkingStages.Add(key, new Parking<Vehicle>(pictureWidth,
-
-                    pictureHeight));
-                    continue;
-                }
-                if (string.IsNullOrEmpty(strs[i]))
-                {
-                    continue;
-                }
-                if (strs[i].Split(separator)[0] == "Car")
-                {
-                    car = new Car(strs[i].Split(separator)[1]);
-                }
-                else if (strs[i].Split(separator)[0] == "SportCar")
-                {
-                    car = new SportCar(strs[i].Split(separator)[1]);
-                }
-                var result = parkingStages[key] + car;
-                if (!result)
-                {
+                    //если нет такой записи, то не те данные
                     return false;
+                }
+                while ((data = fs.ReadLine()) != null)
+                {
+                    Vehicle car = null;
+
+                    if (data.Contains("Parking"))
+                    {
+                        //начинаем новую парковку
+                        key = data.Split(separator)[1];
+                        parkingStages.Add(key, new Parking<Vehicle>(pictureWidth, pictureHeight));
+                        continue;
+                    }
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        continue;
+                    }
+                    if (data.Split(separator)[0] == "Car")
+                    {
+                        car = new Car(data.Split(separator)[1]);
+                    }
+                    else if (data.Split(separator)[0] == "SportCar")
+                    {
+                        car = new Car(data.Split(separator)[1]);
+                    }
+                    var result = parkingStages[key] + car;
+                    if (!result)
+                    {
+                        return false;
+                    }
+
+
                 }
             }
             return true;
         }
+
+        
     }
 }
 
