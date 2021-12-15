@@ -177,6 +177,7 @@ parkingCollection.DelParking(textBoxNewLevelName.Text);
                 {
                     MessageBox.Show(ex.Message, "Не найдено", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+                    logger.Warn($"Не найдено место{ maskedTextBox.Text}");
                 }
                 catch (Exception ex)
                 {
@@ -237,6 +238,7 @@ parkingCollection.DelParking(textBoxNewLevelName.Text);
                 {
                     MessageBox.Show(ex.Message, "Переполнение", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+                    logger.Warn($"Парковка переполнена. Нет мест");
                 }
                 catch (Exception ex)
                 {
@@ -260,7 +262,7 @@ parkingCollection.DelParking(textBoxNewLevelName.Text);
                     MessageBox.Show("Сохранение прошло успешно", "Результат",
 
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    logger.Info("Сохранено в файл " + saveFileDialog.FileName);
+                    logger.Warn("Сохранено в файл " + saveFileDialog.FileName);
                 }
                 catch (Exception ex)
                 {
