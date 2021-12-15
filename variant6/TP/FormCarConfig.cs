@@ -23,17 +23,9 @@ namespace TP
 
 		private event Action<Car> eventAddCar;
 
-		delegate void buttonOk22();
-
-
 		public FormCarConfig()
 		{
 			InitializeComponent();
-			// анонимный метод
-			buttonOk22 d = delegate{
-				eventAddCar?.Invoke(car);
-				Close();
-			};
 			buttonCancel.Click += (object sender, EventArgs e) => { Close(); };
 			pRed.MouseDown += panelColor_MouseDown;
 			pYellow.MouseDown += panelColor_MouseDown;
@@ -194,8 +186,6 @@ namespace TP
 			eventAddCar?.Invoke(car);
 			Close();
 		}
-
-
 	}
 
 }
