@@ -96,7 +96,7 @@ MessageBoxIcon.Question) == DialogResult.Yes)
         //припарковать танк
         private void buttonSetSportCar_Click_1(object sender, EventArgs e)
         {
-            
+
             if (listBoxParkings.SelectedIndex > -1)
             {
                 ColorDialog dialog = new ColorDialog();
@@ -142,7 +142,7 @@ MessageBoxIcon.Question) == DialogResult.Yes)
                 }
             }
         }
-            //кнопка забрать
+        //кнопка забрать
         private void buttonTakeCar_Click(object sender, EventArgs e)
         {
             if (listBoxParkings.SelectedIndex > -1 && maskedTextBox.Text != "")
@@ -243,4 +243,5 @@ MessageBoxIcon.Question) == DialogResult.Yes)
         }
     }
 }
+
 
