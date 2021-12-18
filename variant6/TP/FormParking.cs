@@ -198,6 +198,7 @@ MessageBoxIcon.Question) == DialogResult.Yes)
                 }
             }
         }
+
         /// <summary>
         /// Обработка нажатия пункта меню "Сохранить"
         /// </summary>
